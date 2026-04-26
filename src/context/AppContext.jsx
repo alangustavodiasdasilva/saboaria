@@ -111,6 +111,11 @@ export const AppProvider = ({ children }) => {
     localStorage.setItem('lavena_whatsapp', whatsapp);
   }, [whatsapp]);
 
+  const importProducts = (newProducts, newCategories) => {
+    setProducts(newProducts);
+    setCategories(newCategories);
+  };
+
   return (
     <AppContext.Provider value={{
       products,
