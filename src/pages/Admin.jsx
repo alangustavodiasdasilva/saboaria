@@ -88,42 +88,34 @@ const Admin = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const img = new Image();
-        img.src = reader.result;
-        img.onload = () => {
-          // Canvas para compressão
-          const canvas = document.createElement('canvas');
-          const MAX_WIDTH = 800; // Tamanho ideal para web
-          const MAX_HEIGHT = 800;
-          let width = img.width;
-          let height = img.height;
-
-          if (width > height) {
-            if (width > MAX_WIDTH) {
-              height *= MAX_WIDTH / width;
-              width = MAX_WIDTH;
-            }
-          } else {
-            if (height > MAX_HEIGHT) {
-              width *= MAX_HEIGHT / height;
-              height = MAX_HEIGHT;
-            }
-          }
-
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, width, height);
-
-          // Comprime para JPEG com 70% de qualidade
-          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
-          
-          if (field === 'hero') {
-            setHeroImage(compressedBase64);
-          } else {
-            setFormData({ ...formData, image: compressedBase64 });
-          }
-        };
+        const result = reader.result;
+        
+        // Tentativa de compressão leve (apenas se for muito grande)
+        if (result.length > 1000000) { // Maior que 1MB
+          const img = new Image();
+          img.src = result;
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const scale = Math.sqrt(1000000 / result.length);
+            canvas.width = img.width * scale;
+            canvas.height = img.height * scale;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            const compressed = canvas.toDataURL('image/jpeg', 0.8);
+            
+            if (field === 'hero') setHeroImage(compressed);
+            else setFormData({ ...formData, image: compressed });
+          };
+          img.onerror = () => {
+            // Fallback: se der erro na imagem, usa o original
+            if (field === 'hero') setHeroImage(result);
+            else setFormData({ ...formData, image: result });
+          };
+        } else {
+          // Foto pequena, usa direto
+          if (field === 'hero') setHeroImage(result);
+          else setFormData({ ...formData, image: result });
+        }
       };
       reader.readAsDataURL(file);
     }
