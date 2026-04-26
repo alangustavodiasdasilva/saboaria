@@ -144,7 +144,15 @@ const Home = () => {
               featuredProducts.map(product => (
                 <div key={product.id} className="glass card-hover" style={{ overflow: 'hidden', borderRadius: 'var(--radius-lg)' }}>
                   <div style={{ height: '300px', overflow: 'hidden' }}>
-                    <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img 
+                      src={product.image} 
+                      alt={product.name} 
+                      onError={(e) => {
+                        e.target.onerror = null; 
+                        e.target.src = 'images/hero_official.png';
+                      }}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                    />
                   </div>
                   <div style={{ padding: '2rem' }}>
                     <span style={{ fontSize: '0.7rem', color: 'var(--accent)', fontWeight: 700, textTransform: 'uppercase' }}>{product.category}</span>

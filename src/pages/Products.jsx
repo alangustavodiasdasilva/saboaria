@@ -79,8 +79,16 @@ const Products = () => {
                     className="glass card-hover"
                     style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}
                   >
-                    <div style={{ position: 'relative', height: '320px', overflow: 'hidden' }}>
-                      <img src={product.image || 'https://images.unsplash.com/photo-1600857062241-98e5dba7f214?auto=format&fit=crop&q=80&w=400'} alt={product.name} style={{ height: '100%', width: '100%', objectFit: 'cover' }} />
+                      <div style={{ position: 'relative', height: '320px', overflow: 'hidden' }}>
+                        <img 
+                          src={product.image || 'images/hero_official.png'} 
+                          alt={product.name} 
+                          onError={(e) => {
+                            e.target.onerror = null; 
+                            e.target.src = 'images/hero_official.png';
+                          }}
+                          style={{ height: '100%', width: '100%', objectFit: 'cover' }} 
+                        />
                       <div style={{ position: 'absolute', top: '1.5rem', left: '1.5rem' }}>
                         <span className="glass" style={{ background: 'rgba(253, 251, 247, 0.8)', padding: '6px 14px', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--primary-dark)' }}>
                           {product.category}
