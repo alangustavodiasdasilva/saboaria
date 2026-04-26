@@ -3,7 +3,7 @@ import { AppContext } from '../context/AppContext';
 import { 
   LayoutDashboard, Plus, Trash2, Edit3, LogOut, Package, 
   ShoppingCart, DollarSign, Eye, Image as ImageIcon, Settings,
-  CheckCircle, AlertCircle, Sparkles, Tag
+  CheckCircle, AlertCircle, Sparkles, Tag, Download, Upload, Copy, Check, X
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -11,7 +11,8 @@ const Admin = () => {
   const { 
     products, addProduct, updateProduct, deleteProduct, 
     orders, isAdmin, login, logout, heroImage, setHeroImage,
-    categories, addCategory, deleteCategory, whatsapp, setWhatsapp
+    categories, addCategory, deleteCategory, whatsapp, setWhatsapp,
+    importProducts
   } = useContext(AppContext);
   
   const [password, setPassword] = useState('');
@@ -19,6 +20,9 @@ const Admin = () => {
   const [isAdding, setIsAdding] = useState(false);
   const [editProduct, setEditProduct] = useState(null);
   const [newCatName, setNewCatName] = useState('');
+  const [showSync, setShowSync] = useState(false);
+  const [syncCode, setSyncCode] = useState('');
+  const [copySuccess, setCopySuccess] = useState(false);
   const [formData, setFormData] = useState({ 
     name: '', price: 0, category: categories[0] || '', 
     description: '', benefits: '', image: '' 
@@ -40,11 +44,33 @@ const Admin = () => {
     }
   };
 
+  const exportData = () => {
+    const data = JSON.stringify({ products, categories });
+    navigator.clipboard.writeText(data);
+    alert('Dados exportados para a área de transferência!');
+  };
+
+  const importData = () => {
+    try {
+      const data = JSON.parse(syncCode);
+      importProducts(data.products, data.categories);
+      setShowSync(false);
+      alert('Dados importados com sucesso!');
+    } catch (e) {
+      alert('Código inválido!');
+    }
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(syncCode);
+    setCopySuccess(true);
+    setTimeout(() => setCopySuccess(false), 2000);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Check image size (base64)
-    if (formData.image && formData.image.length > 2000000) { // ~1.5MB in base64
+    if (formData.image && formData.image.length > 2000000) {
       alert('A imagem é muito grande! Por favor, use uma imagem menor ou tire um print da foto para reduzir o tamanho.');
       return;
     }
@@ -90,8 +116,7 @@ const Admin = () => {
       reader.onloadend = () => {
         const result = reader.result;
         
-        // Tentativa de compressão leve (apenas se for muito grande)
-        if (result.length > 1000000) { // Maior que 1MB
+        if (result.length > 1000000) {
           const img = new Image();
           img.src = result;
           img.onload = () => {
@@ -107,12 +132,10 @@ const Admin = () => {
             else setFormData({ ...formData, image: compressed });
           };
           img.onerror = () => {
-            // Fallback: se der erro na imagem, usa o original
             if (field === 'hero') setHeroImage(result);
             else setFormData({ ...formData, image: result });
           };
         } else {
-          // Foto pequena, usa direto
           if (field === 'hero') setHeroImage(result);
           else setFormData({ ...formData, image: result });
         }
@@ -166,8 +189,55 @@ const Admin = () => {
 
   return (
     <div className="fade-in" style={{ background: '#f8f9fa', minHeight: '100vh' }}>
+      {showSync && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+          background: 'rgba(0,0,0,0.5)', zIndex: 2000, display: 'flex',
+          alignItems: 'center', justifyContent: 'center', padding: '20px'
+        }}>
+          <div className="glass" style={{ background: 'white', padding: '2.5rem', borderRadius: '1rem', maxWidth: '500px', width: '100%' }}>
+            <div className="flex justify-between align-center" style={{ marginBottom: '1.5rem' }}>
+              <h3 style={{ fontSize: '1.5rem' }}>{syncCode ? 'Exportar Dados' : 'Importar Dados'}</h3>
+              <button onClick={() => setShowSync(false)}><X /></button>
+            </div>
+            <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '0.9rem' }}>
+              {syncCode 
+                ? 'Copie o código abaixo e cole no seu outro aparelho (celular ou PC) para sincronizar tudo.' 
+                : 'Cole aqui o código que você copiou do seu outro aparelho.'}
+            </p>
+            <textarea 
+              value={syncCode}
+              onChange={(e) => setSyncCode(e.target.value)}
+              placeholder="Cole o código aqui..."
+              style={{
+                width: '100%', height: '150px', padding: '15px',
+                borderRadius: '8px', border: '1px solid #ddd',
+                fontFamily: 'monospace', fontSize: '0.8rem', marginBottom: '1.5rem',
+                resize: 'none'
+              }}
+              readOnly={!!copySuccess && syncCode}
+            />
+            <div className="flex gap-1">
+              {syncCode && !copySuccess ? (
+                <button onClick={copyToClipboard} className="btn btn-primary" style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                  <Copy size={18} /> Copiar Código
+                </button>
+              ) : syncCode && copySuccess ? (
+                <button className="btn" style={{ flex: 1, background: '#25D366', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                  <Check size={18} /> Copiado!
+                </button>
+              ) : (
+                <button onClick={importData} className="btn btn-primary" style={{ flex: 1 }}>
+                  Confirmar Importação
+                </button>
+              )}
+              <button onClick={() => setShowSync(false)} className="btn btn-outline" style={{ flex: 1 }}>Cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="container" style={{ padding: '40px 0' }}>
-        {/* Header */}
         <div className="flex justify-between align-center" style={{ marginBottom: '3rem' }}>
           <div>
             <h1 style={{ fontSize: '2.5rem' }}>Painel Administrativo</h1>
@@ -178,7 +248,6 @@ const Admin = () => {
           </button>
         </div>
 
-        {/* Sidebar Tabs */}
         <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '2.5rem' }}>
           <aside className="flex flex-column gap-1">
             <button 
@@ -188,6 +257,22 @@ const Admin = () => {
             >
               <LayoutDashboard size={20} /> Visão Geral
             </button>
+            <div className="flex gap-1">
+              <button 
+                onClick={() => { setSyncCode(JSON.stringify({ products, categories })); setShowSync(true); }}
+                className="btn btn-outline" 
+                style={{ flex: 1, padding: '8px 10px', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '5px' }}
+              >
+                <Download size={14} /> Exportar
+              </button>
+              <button 
+                onClick={() => { setShowSync(true); setSyncCode(''); }}
+                className="btn btn-outline" 
+                style={{ flex: 1, padding: '8px 10px', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '5px' }}
+              >
+                <Upload size={14} /> Importar
+              </button>
+            </div>
             <button 
               onClick={() => setActiveTab('products')}
               className={`btn ${activeTab === 'products' ? 'btn-primary' : 'glass'}`}

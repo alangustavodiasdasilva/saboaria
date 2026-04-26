@@ -127,6 +127,7 @@ export const AppProvider = ({ children }) => {
       categories,
       addCategory,
       deleteCategory,
+      importProducts,
       whatsapp,
       setWhatsapp
     }}>
