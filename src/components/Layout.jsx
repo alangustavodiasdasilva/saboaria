@@ -25,7 +25,7 @@ export const Navbar = () => {
         </Link>
 
         {/* Desktop Menu */}
-        <div className="flex gap-2 align-center" style={{ display: 'none', '@media (min-width: 768px)': { display: 'flex' } } }>
+        <div className="nav-desktop flex gap-2 align-center">
           <NavLink to="/" className={({isActive}) => isActive ? 'active-link' : ''} style={{ fontWeight: 500, fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Home</NavLink>
           <NavLink to="/produtos" style={{ fontWeight: 500, fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Produtos</NavLink>
           <NavLink to="/sobre" style={{ fontWeight: 500, fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Sobre</NavLink>
@@ -34,7 +34,7 @@ export const Navbar = () => {
         </div>
 
         {/* Mobile Toggle */}
-        <button onClick={() => setIsOpen(!isOpen)} style={{ color: 'var(--primary-dark)' }}>
+        <button className="nav-mobile-toggle" onClick={() => setIsOpen(!isOpen)} style={{ color: 'var(--primary-dark)', background: 'none', border: 'none', padding: '10px' }}>
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>

@@ -107,7 +107,7 @@ img {
 
 /* Premium Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
 }
 ::-webkit-scrollbar-track {
   background: var(--bg-color);
@@ -115,7 +115,6 @@ img {
 ::-webkit-scrollbar-thumb {
   background: var(--secondary);
   border-radius: 10px;
-  border: 3px solid var(--bg-color);
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary-light);
@@ -214,13 +213,58 @@ img {
   animation: fadeInUp 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
 
+.nav-desktop {
+  display: flex;
+}
+
+.nav-mobile-toggle {
+  display: none;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
+  .nav-desktop {
+    display: none !important;
+  }
+  
+  .nav-mobile-toggle {
+    display: block !important;
+  }
   .section-padding {
     padding: 60px 0;
   }
   
   h1 { font-size: 2.5rem !important; }
   h2 { font-size: 2rem !important; }
+
+  .hero-section {
+    height: 80vh !important;
+  }
+
+  /* Fix letter spacing on mobile titles */
+  h1, h2, .brand-font {
+    letter-spacing: 0.1em !important;
+  }
+
+  /* Stack essence sections better */
+  .mobile-stack {
+    grid-template-columns: 1fr !important;
+    padding: 0 20px;
+  }
+
+  /* Adjust grid columns for mobile */
+  .grid-products {
+    grid-template-columns: 1fr !important;
+    padding: 0 15px;
+  }
+
+  /* Hide mouse scroll on mobile */
+  .mouse-scroll, .scroll-indicator {
+    display: none !important;
+  }
+}
+
+.glass {
+  box-shadow: 0 8px 32px 0 rgba(144, 158, 144, 0.12);
 }
 

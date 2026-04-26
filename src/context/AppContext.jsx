@@ -68,7 +68,7 @@ export const AppProvider = ({ children }) => {
   };
 
   const [heroImage, setHeroImage] = useState(() => {
-    return localStorage.getItem('lavena_hero_image') || '/images/hero_official.png';
+    return localStorage.getItem('lavena_hero_image') || 'images/hero_official.png';
   });
 
   useEffect(() => {
