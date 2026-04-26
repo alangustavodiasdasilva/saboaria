@@ -88,7 +88,7 @@ const Home = () => {
           }}>
             <motion.div whileHover={{ y: -5 }} className="glass card-hover" style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', textAlign: 'center' }}>
               <div style={{ height: '220px', overflow: 'hidden' }}>
-                <img src="images/essencia/lavar.png" alt="Lavar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src="/saboaria/images/essencia/lavar.png" alt="Lavar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
               <div style={{ padding: '2.5rem 2rem' }}>
                 <div style={{ color: 'var(--primary)', marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
@@ -101,7 +101,7 @@ const Home = () => {
 
             <motion.div whileHover={{ y: -5 }} className="glass card-hover" style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', textAlign: 'center', border: '1px solid var(--accent-light)' }}>
               <div style={{ height: '220px', overflow: 'hidden' }}>
-                <img src="images/essencia/purificar.png" alt="Purificar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src="/saboaria/images/essencia/purificar.png" alt="Purificar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
               <div style={{ padding: '2.5rem 2rem' }}>
                 <div style={{ color: 'var(--primary)', marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
@@ -114,7 +114,7 @@ const Home = () => {
 
             <motion.div whileHover={{ y: -5 }} className="glass card-hover" style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', textAlign: 'center' }}>
               <div style={{ height: '220px', overflow: 'hidden' }}>
-                <img src="images/essencia/renovar.png" alt="Renovar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <img src="/saboaria/images/essencia/renovar.png" alt="Renovar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
               <div style={{ padding: '2.5rem 2rem' }}>
                 <div style={{ color: 'var(--primary)', marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
