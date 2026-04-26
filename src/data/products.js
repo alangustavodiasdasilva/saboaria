@@ -1,3 +1,5 @@
+const BASE_URL = import.meta.env.BASE_URL;
+
 export const categories = [
   "Sabonete de Colher",
   "Sabonete Líquido",
@@ -13,7 +15,7 @@ export const initialProducts = [
     price: 38.00,
     description: "Refrescância e energia para transformar seu banho em um momento revigorante. Textura cremosa e sensorial.",
     benefits: "Energizante, esfoliante suave e altamente hidratante.",
-    image: "/saboaria/images/sabonete_colher.png"
+    image: `${BASE_URL}images/sabonete_colher.png`
   },
   {
     id: 2,
@@ -22,7 +24,7 @@ export const initialProducts = [
     price: 42.00,
     description: "Leveza e frescor que deixam sua pele delicadamente perfumada e renovada com o aroma doce da melancia.",
     benefits: "Limpeza suave, pH equilibrado e fragrância duradoura.",
-    image: "/saboaria/images/sabonete_liquido.png"
+    image: `${BASE_URL}images/sabonete_liquido.png`
   },
   {
     id: 3,
